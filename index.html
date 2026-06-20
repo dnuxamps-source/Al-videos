@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI BioVid · mechanism explainer</title>
+  <title>AI BioVid Pro · real‑time preview</title>
   <!-- Font Awesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..600;1,14..32,400..600&display=swap" rel="stylesheet" />
@@ -15,9 +15,9 @@
     }
 
     body {
-      background: #f3f7fc;
+      background: #f0f6fd;
       font-family: "Inter", sans-serif;
-      color: #0d1f33;
+      color: #0a1f32;
       padding: 20px 16px 40px;
       min-height: 100vh;
       display: flex;
@@ -26,7 +26,7 @@
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       width: 100%;
     }
 
@@ -37,13 +37,13 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 16px;
-      margin-bottom: 32px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid rgba(20, 80, 130, 0.15);
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(18, 70, 120, 0.12);
     }
 
     .logo {
-      font-size: 1.9rem;
+      font-size: 2rem;
       font-weight: 600;
       letter-spacing: -0.5px;
       color: #043353;
@@ -63,11 +63,11 @@
     .badge-ai {
       background: #0a2640;
       color: #b6d9f0;
-      padding: 10px 24px;
+      padding: 10px 28px;
       border-radius: 60px;
       font-size: 1rem;
       font-weight: 500;
-      box-shadow: 0 4px 8px rgba(0, 20, 40, 0.08);
+      box-shadow: 0 4px 12px rgba(0, 20, 40, 0.08);
     }
     .badge-ai i {
       color: #71b6e6;
@@ -78,36 +78,41 @@
     .card-generator {
       background: white;
       border-radius: 48px;
-      padding: 32px 30px 40px;
-      box-shadow: 0 20px 50px -12px rgba(0, 30, 60, 0.12);
+      padding: 32px 30px 36px;
+      box-shadow: 0 20px 50px -12px rgba(0, 30, 60, 0.10);
       margin-bottom: 40px;
       border: 1px solid #e5eff8;
     }
 
     .generator-title {
-      font-size: 1.8rem;
+      font-size: 1.9rem;
       font-weight: 500;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .generator-title i {
       color: #1b7bbf;
-      margin-right: 12px;
+      margin-right: 14px;
     }
     .sub {
       color: #2d577b;
       margin-bottom: 28px;
       font-size: 1.05rem;
     }
+    .sub i {
+      margin-right: 8px;
+      color: #1b7bbf;
+    }
 
+    /* input + generate */
     .input-group {
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
-      margin-bottom: 28px;
+      margin-bottom: 22px;
     }
     .input-group input {
-      flex: 2 1 280px;
-      padding: 16px 22px;
+      flex: 2 1 300px;
+      padding: 16px 24px;
       border: 2px solid #d5e3f0;
       border-radius: 60px;
       font-size: 1rem;
@@ -118,7 +123,7 @@
     }
     .input-group input:focus {
       border-color: #1b7bbf;
-      box-shadow: 0 0 0 4px rgba(27, 123, 191, 0.15);
+      box-shadow: 0 0 0 4px rgba(27, 123, 191, 0.12);
     }
     .input-group input::placeholder {
       color: #7f9bb3;
@@ -129,7 +134,7 @@
       background: #0b2c48;
       color: white;
       border: none;
-      padding: 16px 38px;
+      padding: 16px 42px;
       border-radius: 60px;
       font-size: 1.1rem;
       font-weight: 600;
@@ -138,18 +143,16 @@
       gap: 14px;
       cursor: pointer;
       transition: 0.25s;
-      box-shadow: 0 6px 14px rgba(11, 44, 72, 0.25);
-      letter-spacing: 0.3px;
+      box-shadow: 0 6px 16px rgba(11, 44, 72, 0.25);
       flex: 0 1 auto;
     }
     .btn-generate i {
       font-size: 1.2rem;
-      transition: 0.2s;
     }
     .btn-generate:hover {
       background: #12406a;
       transform: scale(1.01);
-      box-shadow: 0 10px 20px rgba(11, 44, 72, 0.3);
+      box-shadow: 0 10px 22px rgba(11, 44, 72, 0.3);
     }
     .btn-generate:active {
       transform: scale(0.97);
@@ -159,7 +162,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin: 20px 0 8px;
+      margin: 16px 0 10px;
     }
     .quick-tags span {
       background: #e3eefa;
@@ -181,12 +184,94 @@
       border-color: #86b3da;
     }
 
-    /* video output area */
+    /* real‑time preview / thought process */
+    .preview-panel {
+      background: #eaf2fa;
+      border-radius: 28px;
+      padding: 20px 24px 24px;
+      margin: 28px 0 16px;
+      border: 1px solid #cde0ef;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .preview-header i {
+      font-size: 1.6rem;
+      color: #043353;
+      background: #c5dcee;
+      padding: 8px 12px;
+      border-radius: 40px;
+    }
+    .preview-header h4 {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+    .preview-header .step-indicator {
+      margin-left: auto;
+      background: #0b2c48;
+      color: #bfdef5;
+      padding: 4px 18px;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .thought-log {
+      background: #0b1f2e;
+      border-radius: 20px;
+      padding: 18px 22px;
+      min-height: 100px;
+      max-height: 200px;
+      overflow-y: auto;
+      color: #cfe2f0;
+      font-family: 'Inter', monospace;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      border: 1px solid #2d5270;
+      box-shadow: inset 0 4px 12px rgba(0,0,0,0.2);
+      scroll-behavior: smooth;
+    }
+    .thought-log .log-entry {
+      display: flex;
+      gap: 12px;
+      padding: 4px 0;
+      border-bottom: 1px solid #1e3a52;
+    }
+    .thought-log .log-entry:last-child {
+      border-bottom: none;
+    }
+    .thought-log .log-time {
+      color: #7ba3c4;
+      font-size: 0.75rem;
+      min-width: 62px;
+      opacity: 0.8;
+    }
+    .thought-log .log-icon {
+      color: #71b6e6;
+      width: 20px;
+      text-align: center;
+    }
+    .thought-log .log-text {
+      flex: 1;
+    }
+    .thought-log .log-text .highlight {
+      color: #f5d98f;
+      font-weight: 500;
+    }
+    .thought-log .log-text .done {
+      color: #7bcfa6;
+    }
+
+    /* video output */
     .video-section {
       background: #eaf2fa;
       border-radius: 36px;
       padding: 24px 24px 30px;
-      margin-top: 28px;
+      margin-top: 24px;
       border: 1px solid #cde0ef;
     }
 
@@ -206,7 +291,6 @@
     .video-header h3 {
       font-size: 1.5rem;
       font-weight: 500;
-      color: #043353;
     }
     .video-header .status-badge {
       margin-left: auto;
@@ -221,10 +305,7 @@
     .video-player {
       background: #0b1f2e;
       border-radius: 28px;
-      padding: 20px 16px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 20px 16px;
       box-shadow: inset 0 0 0 1px #284a66;
     }
 
@@ -238,15 +319,15 @@
       align-items: center;
       justify-content: center;
       color: #b4d2ea;
-      font-size: 1.2rem;
-      gap: 18px;
+      font-size: 1.1rem;
+      gap: 14px;
       border: 1px solid #32648a;
-      position: relative;
       transition: 0.3s;
+      cursor: pointer;
     }
     .video-placeholder i {
-      font-size: 5rem;
-      opacity: 0.7;
+      font-size: 4.8rem;
+      opacity: 0.8;
       color: #7bb3da;
     }
     .video-placeholder .play-hint {
@@ -259,10 +340,9 @@
       gap: 12px;
     }
     .video-placeholder .play-hint i {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       opacity: 1;
     }
-
     .video-meta {
       display: flex;
       justify-content: space-between;
@@ -284,7 +364,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 22px;
-      margin: 30px 0 20px;
+      margin: 30px 0 10px;
     }
     .info-card {
       background: white;
@@ -308,7 +388,6 @@
       font-size: 0.95rem;
     }
 
-    /* footer */
     .footer-note {
       text-align: center;
       margin-top: 40px;
@@ -324,45 +403,21 @@
 
     /* responsive */
     @media (max-width: 700px) {
-      .card-generator {
-        padding: 24px 18px;
-      }
-      .input-group input {
-        flex: 1 1 100%;
-      }
-      .btn-generate {
-        width: 100%;
-        justify-content: center;
-      }
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-      .header {
-        flex-direction: column;
-        align-items: start;
-      }
-      .badge-ai {
-        align-self: flex-start;
-      }
-      .video-header {
-        flex-wrap: wrap;
-      }
-      .video-header .status-badge {
-        margin-left: 0;
-      }
+      .card-generator { padding: 24px 18px; }
+      .input-group input { flex: 1 1 100%; }
+      .btn-generate { width: 100%; justify-content: center; }
+      .info-grid { grid-template-columns: 1fr; }
+      .header { flex-direction: column; align-items: start; }
+      .badge-ai { align-self: flex-start; }
+      .video-header { flex-wrap: wrap; }
+      .video-header .status-badge { margin-left: 0; }
+      .preview-header { flex-wrap: wrap; }
+      .preview-header .step-indicator { margin-left: 0; }
     }
-
     @media (max-width: 480px) {
-      .logo {
-        font-size: 1.5rem;
-      }
-      .generator-title {
-        font-size: 1.4rem;
-      }
-      .quick-tags span {
-        font-size: 0.8rem;
-        padding: 6px 14px;
-      }
+      .logo { font-size: 1.5rem; }
+      .generator-title { font-size: 1.4rem; }
+      .quick-tags span { font-size: 0.8rem; padding: 6px 14px; }
     }
   </style>
 </head>
@@ -373,32 +428,31 @@
   <!-- header -->
   <div class="header">
     <div class="logo">
-      <i class="fas fa-dna"></i> Bio<span>Vid</span> AI
+      <i class="fas fa-dna"></i> Bio<span>Vid</span> Pro
     </div>
     <div class="badge-ai">
-      <i class="fas fa-microchip"></i> v2.0 · generative video
+      <i class="fas fa-microchip"></i> v3.0 · real‑time preview
     </div>
   </div>
 
-  <!-- main generator card -->
+  <!-- main generator -->
   <div class="card-generator">
     <div class="generator-title">
       <i class="fas fa-film"></i> AI video generator
     </div>
     <div class="sub">
-      <i class="fas fa-robot" style="margin-right: 10px; color: #1b7bbf;"></i> 
-      Describe a biological mechanism or drug action — I'll generate a clear animated explainer video.
+      <i class="fas fa-robot"></i> Describe a mechanism — I'll research, reason, and generate a clear animated explainer.
     </div>
 
     <!-- input + generate -->
     <div class="input-group">
-      <input type="text" id="promptInput" placeholder="e.g. DNA replication, ACE inhibitor mechanism, GPCR signaling..." value="DNA replication mechanism" />
+      <input type="text" id="promptInput" placeholder="e.g. DNA replication, ACE inhibitor, GPCR signaling..." value="DNA replication mechanism" />
       <button class="btn-generate" id="generateBtn">
-        <i class="fas fa-wand-magic-sparkles"></i> Generate video
+        <i class="fas fa-wand-magic-sparkles"></i> Generate
       </button>
     </div>
 
-    <!-- quick tags (examples) -->
+    <!-- quick tags -->
     <div class="quick-tags">
       <span data-prompt="DNA replication (helicase, polymerase, leading & lagging strands)"><i class="fas fa-helix"></i> DNA replication</span>
       <span data-prompt="Mechanism of action of ACE inhibitors (angiotensin-converting enzyme)"><i class="fas fa-heart-pulse"></i> ACE inhibitors</span>
@@ -407,7 +461,23 @@
       <span data-prompt="Neuronal action potential (sodium/potassium channels, depolarization)"><i class="fas fa-bolt"></i> Action potential</span>
     </div>
 
-    <!-- video output area -->
+    <!-- REAL‑TIME PREVIEW PANEL -->
+    <div class="preview-panel" id="previewPanel">
+      <div class="preview-header">
+        <i class="fas fa-brain"></i>
+        <h4>AI thought process · real‑time</h4>
+        <span class="step-indicator" id="stepIndicator"><i class="fas fa-circle" style="color: #7bb3da; font-size: 0.6rem; margin-right: 6px;"></i> idle</span>
+      </div>
+      <div class="thought-log" id="thoughtLog">
+        <div class="log-entry">
+          <span class="log-time">--:--</span>
+          <span class="log-icon"><i class="fas fa-info-circle"></i></span>
+          <span class="log-text">Awaiting your prompt …</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- video output -->
     <div class="video-section" id="videoSection">
       <div class="video-header">
         <i class="fas fa-play-circle"></i>
@@ -425,7 +495,6 @@
             <i class="fas fa-message"></i> “<span id="currentTopicDisplay">DNA replication</span>”
           </div>
         </div>
-        <!-- video meta -->
         <div class="video-meta">
           <span><i class="fas fa-clock"></i> ~1:24 min</span>
           <span><i class="fas fa-list-check"></i> 4 steps explained</span>
@@ -435,23 +504,22 @@
     </div>
   </div>
 
-  <!-- information cards -->
+  <!-- info cards -->
   <div class="info-grid">
     <div class="info-card">
-      <i class="fas fa-flask"></i>
-      <h4>Biochemical accuracy</h4>
-      <p>Videos are generated with up-to-date molecular mechanisms, enzyme names, and structural details — based on your prompt.</p>
+      <i class="fas fa-globe"></i>
+      <h4>Online resources</h4>
+      <p>Simulates access to PubMed, textbooks, and structural databases — real‑time information retrieval.</p>
     </div>
     <div class="info-card">
       <i class="fas fa-palette"></i>
       <h4>Visual & clear</h4>
-      <p>Animated pathways with color-coded molecules, arrows, and voiceover. Perfect for teaching, revision, or presentation.</p>
+      <p>Animated pathways with color‑coded molecules, arrows, and voiceover — generated from your prompt.</p>
     </div>
   </div>
 
-  <!-- footer -->
   <div class="footer-note">
-    <i class="fas fa-microscope"></i> AI-powered · always generating clear biological explainers · 
+    <i class="fas fa-microscope"></i> AI‑powered · always generating clear biological explainers · 
     <i class="fas fa-graduation-cap"></i> for students & educators
   </div>
 </div>
@@ -463,97 +531,154 @@
     const statusBadge = document.getElementById('statusBadge');
     const currentTopicDisplay = document.getElementById('currentTopicDisplay');
     const videoPlaceholder = document.getElementById('videoPlaceholder');
+    const thoughtLog = document.getElementById('thoughtLog');
+    const stepIndicator = document.getElementById('stepIndicator');
 
-    // Quick tag click: fill input and generate
-    document.querySelectorAll('.quick-tags span').forEach(tag => {
-      tag.addEventListener('click', function(e) {
-        const prompt = this.dataset.prompt;
-        if (prompt) {
-          promptInput.value = prompt;
-          // auto generate after a tiny delay
-          setTimeout(() => {
-            generateBtn.click();
-          }, 120);
-        }
-      });
-    });
-
-    // generate handler (simulate AI video generation)
-    function generateVideo(topic) {
-      if (!topic || topic.trim() === '') {
-        topic = 'biological mechanism';
-      }
-      // update status
-      statusBadge.innerHTML = `<i class="fas fa-spinner fa-spin" style="margin-right: 6px;"></i> generating...`;
-      statusBadge.style.background = '#1d4b6b';
-      statusBadge.style.color = '#e1f0fa';
-
-      // update topic display
-      currentTopicDisplay.textContent = topic;
-
-      // animate placeholder (simulate loading)
-      const placeholderIcon = videoPlaceholder.querySelector('i');
-      const playHint = videoPlaceholder.querySelector('.play-hint');
-      const extraText = videoPlaceholder.querySelector('div:last-child');
-
-      // change icon to spinner
-      if (placeholderIcon) {
-        placeholderIcon.className = 'fas fa-circle-notch fa-spin';
-        placeholderIcon.style.fontSize = '4.5rem';
-        placeholderIcon.style.color = '#8bc1e6';
-      }
-      if (playHint) {
-        playHint.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> synthesizing animation...`;
-      }
-      if (extraText) {
-        extraText.innerHTML = `<i class="fas fa-message"></i> “${topic}” · generating 3D models`;
-      }
-
-      // simulate AI generation (2.5 sec)
-      setTimeout(() => {
-        // restore with "video generated" state
-        if (placeholderIcon) {
-          placeholderIcon.className = 'fas fa-play-circle';
-          placeholderIcon.style.fontSize = '5rem';
-          placeholderIcon.style.color = '#7bb3da';
-        }
-        if (playHint) {
-          playHint.innerHTML = `<i class="fas fa-play"></i> ▶ video ready · click to watch`;
-        }
-        if (extraText) {
-          extraText.innerHTML = `<i class="fas fa-check-circle" style="color: #5ba6d9;"></i> “${topic}” · AI explainer generated`;
-        }
-
-        // update status badge
-        statusBadge.innerHTML = `<i class="fas fa-circle" style="color: #68c3a0; font-size: 0.6rem; margin-right: 6px;"></i> ready · ${new Date().toLocaleTimeString()}`;
-        statusBadge.style.background = '#0b2c48';
-        statusBadge.style.color = '#bfdef5';
-
-        // add a small "new video" effect
-        videoPlaceholder.style.transition = '0.3s';
-        videoPlaceholder.style.boxShadow = '0 0 0 2px #3b87b5';
-        setTimeout(() => {
-          videoPlaceholder.style.boxShadow = 'none';
-        }, 800);
-
-        // bonus: change the main icon to dna again after a moment? but keep play
-        // we also show a "simulated" video by changing placeholder background 
-        // (visual feedback that video is "rendered")
-        videoPlaceholder.style.background = '#123a4f';
-        setTimeout(() => {
-          videoPlaceholder.style.background = '#0f283b';
-        }, 400);
-
-      }, 2500);
+    // Helper: add log entry with timestamp
+    function addLog(icon, text, highlight = false, done = false) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      const now = new Date();
+      const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      let textHtml = text;
+      if (highlight) textHtml = `<span class="highlight">${text}</span>`;
+      if (done) textHtml = `<span class="done">${text}</span>`;
+      entry.innerHTML = `
+        <span class="log-time">${time}</span>
+        <span class="log-icon"><i class="fas ${icon}"></i></span>
+        <span class="log-text">${textHtml}</span>
+      `;
+      thoughtLog.appendChild(entry);
+      thoughtLog.scrollTop = thoughtLog.scrollHeight;
     }
 
-    // event listener for generate button
+    // Clear log and add initial
+    function resetLog() {
+      thoughtLog.innerHTML = '';
+      addLog('fa-info-circle', 'Initializing AI engine …');
+      addLog('fa-database', 'Loading biological knowledge base …');
+      addLog('fa-check-circle', 'Ready.', false, true);
+    }
+
+    // Simulate "online resource access" with realistic steps
+    function runResearchPipeline(topic) {
+      return new Promise((resolve) => {
+        const steps = [
+          { icon: 'fa-search', msg: `Searching online resources for "${topic}" …` },
+          { icon: 'fa-book-open', msg: `Fetching from PubMed, textbooks, and structural databases …` },
+          { icon: 'fa-microscope', msg: `Extracting key molecular players and pathways …` },
+          { icon: 'fa-merge', msg: `Synthesizing mechanism: 4‑step pathway identified.` },
+          { icon: 'fa-pen-fancy', msg: `Generating narrative script and visual storyboard …` },
+          { icon: 'fa-check-circle', msg: `✅ Information collected. Ready to generate video.`, done: true }
+        ];
+
+        let delay = 400;
+        steps.forEach((step, index) => {
+          setTimeout(() => {
+            if (index === steps.length - 1) {
+              addLog(step.icon, step.msg, false, true);
+            } else {
+              addLog(step.icon, step.msg, true);
+            }
+            // update step indicator
+            stepIndicator.innerHTML = `<i class="fas fa-circle" style="color: #f5d98f; font-size: 0.6rem; margin-right: 6px;"></i> step ${index+1}/${steps.length}`;
+            if (index === steps.length - 1) {
+              stepIndicator.innerHTML = `<i class="fas fa-check-circle" style="color: #7bcfa6; font-size: 0.7rem; margin-right: 6px;"></i> research done`;
+            }
+          }, delay * (index + 0.5));
+        });
+
+        // resolve after all steps
+        setTimeout(() => {
+          resolve();
+        }, delay * (steps.length + 1) + 200);
+      });
+    }
+
+    // Simulate video generation (with preview)
+    function generateVideo(topic) {
+      if (!topic || topic.trim() === '') topic = 'biological mechanism';
+
+      // reset log & add initial entries
+      resetLog();
+
+      // Update UI status
+      statusBadge.innerHTML = `<i class="fas fa-spinner fa-spin" style="margin-right: 6px;"></i> researching …`;
+      statusBadge.style.background = '#1d4b6b';
+      statusBadge.style.color = '#e1f0fa';
+      currentTopicDisplay.textContent = topic;
+
+      // disable button during process
+      generateBtn.disabled = true;
+      generateBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> working …`;
+
+      // Step 1: run research pipeline
+      runResearchPipeline(topic).then(() => {
+        // Step 2: video generation (simulate)
+        addLog('fa-film', `🎬 Rendering animated explainer for "${topic}" …`, true);
+        stepIndicator.innerHTML = `<i class="fas fa-spinner fa-pulse" style="color: #71b6e6; font-size: 0.7rem; margin-right: 6px;"></i> generating video`;
+
+        // Update placeholder to show "rendering"
+        const placeholderIcon = videoPlaceholder.querySelector('i');
+        const playHint = videoPlaceholder.querySelector('.play-hint');
+        const extraText = videoPlaceholder.querySelector('div:last-child');
+
+        if (placeholderIcon) {
+          placeholderIcon.className = 'fas fa-circle-notch fa-spin';
+          placeholderIcon.style.fontSize = '4.5rem';
+          placeholderIcon.style.color = '#8bc1e6';
+        }
+        if (playHint) {
+          playHint.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> rendering animation …`;
+        }
+        if (extraText) {
+          extraText.innerHTML = `<i class="fas fa-message"></i> “${topic}” · generating 3D models & voiceover`;
+        }
+
+        // after 2.5 sec, video ready
+        setTimeout(() => {
+          // restore with "video generated"
+          if (placeholderIcon) {
+            placeholderIcon.className = 'fas fa-play-circle';
+            placeholderIcon.style.fontSize = '5rem';
+            placeholderIcon.style.color = '#7bb3da';
+          }
+          if (playHint) {
+            playHint.innerHTML = `<i class="fas fa-play"></i> ▶ video ready · click to watch`;
+          }
+          if (extraText) {
+            extraText.innerHTML = `<i class="fas fa-check-circle" style="color: #5ba6d9;"></i> “${topic}” · AI explainer generated`;
+          }
+
+          // status badge
+          statusBadge.innerHTML = `<i class="fas fa-circle" style="color: #68c3a0; font-size: 0.6rem; margin-right: 6px;"></i> ready · ${new Date().toLocaleTimeString()}`;
+          statusBadge.style.background = '#0b2c48';
+          statusBadge.style.color = '#bfdef5';
+
+          // final log
+          addLog('fa-check-circle', `✅ Video generation complete.`, false, true);
+          stepIndicator.innerHTML = `<i class="fas fa-check-circle" style="color: #7bcfa6; font-size: 0.7rem; margin-right: 6px;"></i> done`;
+
+          // flash effect
+          videoPlaceholder.style.boxShadow = '0 0 0 2px #3b87b5';
+          setTimeout(() => {
+            videoPlaceholder.style.boxShadow = 'none';
+          }, 700);
+
+          // re-enable button
+          generateBtn.disabled = false;
+          generateBtn.innerHTML = `<i class="fas fa-wand-magic-sparkles"></i> Generate`;
+
+        }, 2500);
+      });
+    }
+
+    // Event listeners
     generateBtn.addEventListener('click', function() {
       const topic = promptInput.value.trim() || 'biological mechanism';
       generateVideo(topic);
     });
 
-    // Enter key support
     promptInput.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -561,20 +686,28 @@
       }
     });
 
-    // click on video placeholder to "replay" (just show a message)
+    // Quick tags
+    document.querySelectorAll('.quick-tags span').forEach(tag => {
+      tag.addEventListener('click', function() {
+        const prompt = this.dataset.prompt;
+        if (prompt) {
+          promptInput.value = prompt;
+          setTimeout(() => generateBtn.click(), 100);
+        }
+      });
+    });
+
+    // Click on video placeholder to "replay"
     videoPlaceholder.addEventListener('click', function() {
-      // if not in generating state, show a small toast-like effect
-      if (!statusBadge.innerHTML.includes('generating')) {
-        const currentTopic = currentTopicDisplay.textContent;
-        // simulate replay
+      if (!statusBadge.innerHTML.includes('researching') && !statusBadge.innerHTML.includes('generating')) {
+        const topic = currentTopicDisplay.textContent;
         const playHint = videoPlaceholder.querySelector('.play-hint');
         if (playHint) {
-          playHint.innerHTML = `<i class="fas fa-rotate-right"></i> replaying “${currentTopic}”`;
+          playHint.innerHTML = `<i class="fas fa-rotate-right"></i> replaying “${topic}”`;
           setTimeout(() => {
             playHint.innerHTML = `<i class="fas fa-play"></i> ▶ video ready · click to watch`;
           }, 1500);
         }
-        // brief flash
         videoPlaceholder.style.boxShadow = '0 0 0 2px #6aaeda';
         setTimeout(() => {
           videoPlaceholder.style.boxShadow = 'none';
@@ -582,20 +715,18 @@
       }
     });
 
-    // initial load: generate a default video for "DNA replication" 
+    // init: generate default
     window.addEventListener('load', function() {
-      // set default if input is empty
       if (!promptInput.value.trim()) {
         promptInput.value = 'DNA replication mechanism';
       }
-      // generate after a small delay so the user sees the UI
+      // small delay to show UI then generate
       setTimeout(() => {
         generateBtn.click();
-      }, 400);
+      }, 500);
     });
 
   })();
 </script>
-
 </body>
 </html>
