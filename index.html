@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI BioVid · mechanism explainer</title>
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..600;1,14..32,400..600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f3f7fc;
+      font-family: "Inter", sans-serif;
+      color: #0d1f33;
+      padding: 20px 16px 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(20, 80, 130, 0.15);
+    }
+
+    .logo {
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      color: #043353;
+    }
+    .logo i {
+      color: #1b7bbf;
+      margin-right: 10px;
+      background: #d7e7f5;
+      padding: 8px 10px;
+      border-radius: 40px;
+      font-size: 1.7rem;
+    }
+    .logo span {
+      color: #1b7bbf;
+    }
+
+    .badge-ai {
+      background: #0a2640;
+      color: #b6d9f0;
+      padding: 10px 24px;
+      border-radius: 60px;
+      font-size: 1rem;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(0, 20, 40, 0.08);
+    }
+    .badge-ai i {
+      color: #71b6e6;
+      margin-right: 8px;
+    }
+
+    /* main card */
+    .card-generator {
+      background: white;
+      border-radius: 48px;
+      padding: 32px 30px 40px;
+      box-shadow: 0 20px 50px -12px rgba(0, 30, 60, 0.12);
+      margin-bottom: 40px;
+      border: 1px solid #e5eff8;
+    }
+
+    .generator-title {
+      font-size: 1.8rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .generator-title i {
+      color: #1b7bbf;
+      margin-right: 12px;
+    }
+    .sub {
+      color: #2d577b;
+      margin-bottom: 28px;
+      font-size: 1.05rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .input-group input {
+      flex: 2 1 280px;
+      padding: 16px 22px;
+      border: 2px solid #d5e3f0;
+      border-radius: 60px;
+      font-size: 1rem;
+      background: #fafdff;
+      transition: 0.2s;
+      outline: none;
+      font-weight: 400;
+    }
+    .input-group input:focus {
+      border-color: #1b7bbf;
+      box-shadow: 0 0 0 4px rgba(27, 123, 191, 0.15);
+    }
+    .input-group input::placeholder {
+      color: #7f9bb3;
+      font-style: italic;
+    }
+
+    .btn-generate {
+      background: #0b2c48;
+      color: white;
+      border: none;
+      padding: 16px 38px;
+      border-radius: 60px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: 0.25s;
+      box-shadow: 0 6px 14px rgba(11, 44, 72, 0.25);
+      letter-spacing: 0.3px;
+      flex: 0 1 auto;
+    }
+    .btn-generate i {
+      font-size: 1.2rem;
+      transition: 0.2s;
+    }
+    .btn-generate:hover {
+      background: #12406a;
+      transform: scale(1.01);
+      box-shadow: 0 10px 20px rgba(11, 44, 72, 0.3);
+    }
+    .btn-generate:active {
+      transform: scale(0.97);
+    }
+
+    .quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0 8px;
+    }
+    .quick-tags span {
+      background: #e3eefa;
+      padding: 8px 20px;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      color: #043353;
+      border: 1px solid #c2d9ec;
+      cursor: pointer;
+      transition: 0.15s;
+      font-weight: 500;
+    }
+    .quick-tags span i {
+      margin-right: 8px;
+      color: #1b7bbf;
+    }
+    .quick-tags span:hover {
+      background: #cde2f5;
+      border-color: #86b3da;
+    }
+
+    /* video output area */
+    .video-section {
+      background: #eaf2fa;
+      border-radius: 36px;
+      padding: 24px 24px 30px;
+      margin-top: 28px;
+      border: 1px solid #cde0ef;
+    }
+
+    .video-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .video-header i {
+      font-size: 2rem;
+      color: #043353;
+      background: #c5dcee;
+      padding: 10px;
+      border-radius: 40px;
+    }
+    .video-header h3 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #043353;
+    }
+    .video-header .status-badge {
+      margin-left: auto;
+      background: #0b2c48;
+      color: #bfdef5;
+      padding: 5px 20px;
+      border-radius: 60px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .video-player {
+      background: #0b1f2e;
+      border-radius: 28px;
+      padding: 20px 16px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: inset 0 0 0 1px #284a66;
+    }
+
+    .video-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0f283b;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #b4d2ea;
+      font-size: 1.2rem;
+      gap: 18px;
+      border: 1px solid #32648a;
+      position: relative;
+      transition: 0.3s;
+    }
+    .video-placeholder i {
+      font-size: 5rem;
+      opacity: 0.7;
+      color: #7bb3da;
+    }
+    .video-placeholder .play-hint {
+      background: #1d4b6b;
+      padding: 10px 28px;
+      border-radius: 60px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .video-placeholder .play-hint i {
+      font-size: 1.4rem;
+      opacity: 1;
+    }
+
+    .video-meta {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 16px;
+      color: #b4d2ea;
+      font-size: 0.9rem;
+      padding: 0 6px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .video-meta span i {
+      margin-right: 8px;
+      color: #7bb3da;
+    }
+
+    /* info cards */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin: 30px 0 20px;
+    }
+    .info-card {
+      background: white;
+      border-radius: 28px;
+      padding: 22px 24px;
+      border: 1px solid #e5eff8;
+      box-shadow: 0 6px 18px rgba(0, 20, 30, 0.04);
+    }
+    .info-card i {
+      color: #1b7bbf;
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+    .info-card h4 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .info-card p {
+      color: #3a5e7a;
+      font-size: 0.95rem;
+    }
+
+    /* footer */
+    .footer-note {
+      text-align: center;
+      margin-top: 40px;
+      color: #3d627f;
+      border-top: 1px solid #d3e2ef;
+      padding-top: 28px;
+      font-size: 0.95rem;
+    }
+    .footer-note i {
+      color: #b0453a;
+      margin: 0 6px;
+    }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .card-generator {
+        padding: 24px 18px;
+      }
+      .input-group input {
+        flex: 1 1 100%;
+      }
+      .btn-generate {
+        width: 100%;
+        justify-content: center;
+      }
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+      .header {
+        flex-direction: column;
+        align-items: start;
+      }
+      .badge-ai {
+        align-self: flex-start;
+      }
+      .video-header {
+        flex-wrap: wrap;
+      }
+      .video-header .status-badge {
+        margin-left: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 1.5rem;
+      }
+      .generator-title {
+        font-size: 1.4rem;
+      }
+      .quick-tags span {
+        font-size: 0.8rem;
+        padding: 6px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- header -->
+  <div class="header">
+    <div class="logo">
+      <i class="fas fa-dna"></i> Bio<span>Vid</span> AI
+    </div>
+    <div class="badge-ai">
+      <i class="fas fa-microchip"></i> v2.0 · generative video
+    </div>
+  </div>
+
+  <!-- main generator card -->
+  <div class="card-generator">
+    <div class="generator-title">
+      <i class="fas fa-film"></i> AI video generator
+    </div>
+    <div class="sub">
+      <i class="fas fa-robot" style="margin-right: 10px; color: #1b7bbf;"></i> 
+      Describe a biological mechanism or drug action — I'll generate a clear animated explainer video.
+    </div>
+
+    <!-- input + generate -->
+    <div class="input-group">
+      <input type="text" id="promptInput" placeholder="e.g. DNA replication, ACE inhibitor mechanism, GPCR signaling..." value="DNA replication mechanism" />
+      <button class="btn-generate" id="generateBtn">
+        <i class="fas fa-wand-magic-sparkles"></i> Generate video
+      </button>
+    </div>
+
+    <!-- quick tags (examples) -->
+    <div class="quick-tags">
+      <span data-prompt="DNA replication (helicase, polymerase, leading & lagging strands)"><i class="fas fa-helix"></i> DNA replication</span>
+      <span data-prompt="Mechanism of action of ACE inhibitors (angiotensin-converting enzyme)"><i class="fas fa-heart-pulse"></i> ACE inhibitors</span>
+      <span data-prompt="GPCR signaling cascade (G protein, adenylyl cyclase, cAMP)"><i class="fas fa-signal"></i> GPCR pathway</span>
+      <span data-prompt="Insulin mechanism of action (receptor tyrosine kinase, GLUT4)"><i class="fas fa-droplet"></i> Insulin action</span>
+      <span data-prompt="Neuronal action potential (sodium/potassium channels, depolarization)"><i class="fas fa-bolt"></i> Action potential</span>
+    </div>
+
+    <!-- video output area -->
+    <div class="video-section" id="videoSection">
+      <div class="video-header">
+        <i class="fas fa-play-circle"></i>
+        <h3>Generated video</h3>
+        <span class="status-badge" id="statusBadge"><i class="fas fa-circle" style="color: #7bb3da; font-size: 0.6rem; margin-right: 6px;"></i> ready</span>
+      </div>
+
+      <div class="video-player">
+        <div class="video-placeholder" id="videoPlaceholder">
+          <i class="fas fa-dna"></i>
+          <div class="play-hint">
+            <i class="fas fa-play"></i> preview animation
+          </div>
+          <div style="font-size: 0.9rem; opacity: 0.7; margin-top: 4px;">
+            <i class="fas fa-message"></i> “<span id="currentTopicDisplay">DNA replication</span>”
+          </div>
+        </div>
+        <!-- video meta -->
+        <div class="video-meta">
+          <span><i class="fas fa-clock"></i> ~1:24 min</span>
+          <span><i class="fas fa-list-check"></i> 4 steps explained</span>
+          <span><i class="fas fa-high-definition"></i> 1080p · AI narrated</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- information cards -->
+  <div class="info-grid">
+    <div class="info-card">
+      <i class="fas fa-flask"></i>
+      <h4>Biochemical accuracy</h4>
+      <p>Videos are generated with up-to-date molecular mechanisms, enzyme names, and structural details — based on your prompt.</p>
+    </div>
+    <div class="info-card">
+      <i class="fas fa-palette"></i>
+      <h4>Visual & clear</h4>
+      <p>Animated pathways with color-coded molecules, arrows, and voiceover. Perfect for teaching, revision, or presentation.</p>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <div class="footer-note">
+    <i class="fas fa-microscope"></i> AI-powered · always generating clear biological explainers · 
+    <i class="fas fa-graduation-cap"></i> for students & educators
+  </div>
+</div>
+
+<script>
+  (function() {
+    const promptInput = document.getElementById('promptInput');
+    const generateBtn = document.getElementById('generateBtn');
+    const statusBadge = document.getElementById('statusBadge');
+    const currentTopicDisplay = document.getElementById('currentTopicDisplay');
+    const videoPlaceholder = document.getElementById('videoPlaceholder');
+
+    // Quick tag click: fill input and generate
+    document.querySelectorAll('.quick-tags span').forEach(tag => {
+      tag.addEventListener('click', function(e) {
+        const prompt = this.dataset.prompt;
+        if (prompt) {
+          promptInput.value = prompt;
+          // auto generate after a tiny delay
+          setTimeout(() => {
+            generateBtn.click();
+          }, 120);
+        }
+      });
+    });
+
+    // generate handler (simulate AI video generation)
+    function generateVideo(topic) {
+      if (!topic || topic.trim() === '') {
+        topic = 'biological mechanism';
+      }
+      // update status
+      statusBadge.innerHTML = `<i class="fas fa-spinner fa-spin" style="margin-right: 6px;"></i> generating...`;
+      statusBadge.style.background = '#1d4b6b';
+      statusBadge.style.color = '#e1f0fa';
+
+      // update topic display
+      currentTopicDisplay.textContent = topic;
+
+      // animate placeholder (simulate loading)
+      const placeholderIcon = videoPlaceholder.querySelector('i');
+      const playHint = videoPlaceholder.querySelector('.play-hint');
+      const extraText = videoPlaceholder.querySelector('div:last-child');
+
+      // change icon to spinner
+      if (placeholderIcon) {
+        placeholderIcon.className = 'fas fa-circle-notch fa-spin';
+        placeholderIcon.style.fontSize = '4.5rem';
+        placeholderIcon.style.color = '#8bc1e6';
+      }
+      if (playHint) {
+        playHint.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> synthesizing animation...`;
+      }
+      if (extraText) {
+        extraText.innerHTML = `<i class="fas fa-message"></i> “${topic}” · generating 3D models`;
+      }
+
+      // simulate AI generation (2.5 sec)
+      setTimeout(() => {
+        // restore with "video generated" state
+        if (placeholderIcon) {
+          placeholderIcon.className = 'fas fa-play-circle';
+          placeholderIcon.style.fontSize = '5rem';
+          placeholderIcon.style.color = '#7bb3da';
+        }
+        if (playHint) {
+          playHint.innerHTML = `<i class="fas fa-play"></i> ▶ video ready · click to watch`;
+        }
+        if (extraText) {
+          extraText.innerHTML = `<i class="fas fa-check-circle" style="color: #5ba6d9;"></i> “${topic}” · AI explainer generated`;
+        }
+
+        // update status badge
+        statusBadge.innerHTML = `<i class="fas fa-circle" style="color: #68c3a0; font-size: 0.6rem; margin-right: 6px;"></i> ready · ${new Date().toLocaleTimeString()}`;
+        statusBadge.style.background = '#0b2c48';
+        statusBadge.style.color = '#bfdef5';
+
+        // add a small "new video" effect
+        videoPlaceholder.style.transition = '0.3s';
+        videoPlaceholder.style.boxShadow = '0 0 0 2px #3b87b5';
+        setTimeout(() => {
+          videoPlaceholder.style.boxShadow = 'none';
+        }, 800);
+
+        // bonus: change the main icon to dna again after a moment? but keep play
+        // we also show a "simulated" video by changing placeholder background 
+        // (visual feedback that video is "rendered")
+        videoPlaceholder.style.background = '#123a4f';
+        setTimeout(() => {
+          videoPlaceholder.style.background = '#0f283b';
+        }, 400);
+
+      }, 2500);
+    }
+
+    // event listener for generate button
+    generateBtn.addEventListener('click', function() {
+      const topic = promptInput.value.trim() || 'biological mechanism';
+      generateVideo(topic);
+    });
+
+    // Enter key support
+    promptInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        generateBtn.click();
+      }
+    });
+
+    // click on video placeholder to "replay" (just show a message)
+    videoPlaceholder.addEventListener('click', function() {
+      // if not in generating state, show a small toast-like effect
+      if (!statusBadge.innerHTML.includes('generating')) {
+        const currentTopic = currentTopicDisplay.textContent;
+        // simulate replay
+        const playHint = videoPlaceholder.querySelector('.play-hint');
+        if (playHint) {
+          playHint.innerHTML = `<i class="fas fa-rotate-right"></i> replaying “${currentTopic}”`;
+          setTimeout(() => {
+            playHint.innerHTML = `<i class="fas fa-play"></i> ▶ video ready · click to watch`;
+          }, 1500);
+        }
+        // brief flash
+        videoPlaceholder.style.boxShadow = '0 0 0 2px #6aaeda';
+        setTimeout(() => {
+          videoPlaceholder.style.boxShadow = 'none';
+        }, 500);
+      }
+    });
+
+    // initial load: generate a default video for "DNA replication" 
+    window.addEventListener('load', function() {
+      // set default if input is empty
+      if (!promptInput.value.trim()) {
+        promptInput.value = 'DNA replication mechanism';
+      }
+      // generate after a small delay so the user sees the UI
+      setTimeout(() => {
+        generateBtn.click();
+      }, 400);
+    });
+
+  })();
+</script>
+
+</body>
+</html>
